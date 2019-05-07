@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, request , Blueprint , jsonify
 from flask_login import login_required 
-from app.models import Rig01
+from app.models import Measurement
 from flask import current_app
 from app import db
 from datetime import datetime
@@ -19,26 +19,27 @@ def add():
         try:
             api_data = requests.get(WEATHER_API_URL , timeout=10).json()    # weather API
 
-            mesur = Rig01 (
+            mesur = Measurement (
+                    RigId=data['RigId'],
                     Time_Stamp=(data['TimeStamp']), 
                     Temp1=float(data['Temp1']), 
                     Temp2=float(data['Temp2']), 
                     Tambiant=float(data['TAmbiant']), 
                     Humidity=float(data['Humidity']),
-                    Temp=api_data['main']['temp'] - 273.15 ,
+                    API_Temp=api_data['main']['temp'] - 273.15 ,
                     API_Humidity=api_data['main']['humidity'] ,
-                    Pressure=api_data['main']['pressure'] ,
-                    WindSpeed=api_data['wind']['speed'] ,
-                    WindDeg=api_data['wind']['deg'] ,
-                    Weather=api_data['weather'][0]['main']
+                    API_Pressure=api_data['main']['pressure'] ,
+                    API_WindSpeed=api_data['wind']['speed'] ,
+                    API_WindDeg=api_data['wind']['deg'] ,
+                    API_Weather=api_data['weather'][0]['main']
                     )
 
             db.session.add(mesur)       # add the measur to the data base
             db.session.commit()
 
         except:
-            print("api exception")
-            mesur = Rig01 (
+            # API request failled
+            mesur = Measurement (
                     Time_Stamp=(data['TimeStamp']), 
                     Temp1=float(data['Temp1']), 
                     Temp2=float(data['Temp2']), 
@@ -55,7 +56,7 @@ def add():
 @login_required
 def delete():
     try:
-        num_rows_deleted = db.session.query(Rig01).delete()
+        num_rows_deleted = db.session.query(Measurement).delete()
         print(num_rows_deleted)
         db.session.commit()
     except:
@@ -66,7 +67,7 @@ def delete():
 @function.route('/data')
 @login_required
 def data():
-    qresponse = Rig01.query.order_by(Rig01.Time_Stamp.desc()).all()
+    qresponse = Measurement.query.order_by(Measurement.Time_Stamp.desc()).all()
     xAxe = []
     t1vec = [] 
     t2vec = []
@@ -78,10 +79,5 @@ def data():
         t2vec.append(i.Temp2)
         tambvec.append(i.Tambiant)
         humidity.append(i.Humidity)
-    # print(xAxe)
-    # print(t1vec)
-    # print(t2vec)
-    # print(tambvec)
-    # print(humidity)
     data = jsonify({'time':xAxe , 'Temp1':t1vec , 'Temp2':t2vec , 'Tambiant':tambvec , 'Humidity':humidity})
     return data
