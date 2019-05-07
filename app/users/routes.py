@@ -16,7 +16,7 @@ def login():
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('user.login'))
-        login_user(user) # login_user(user, remember=form.remember_me.data)
+        login_user(user)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('main.index')
@@ -27,14 +27,3 @@ def login():
 def logout():
     logout_user()
     return redirect('/login')
-
-# profile
-# @users.route('/user/<username>')
-# @login_required
-# def user(username):
-#     user = User.query.filter_by(username=username).first_or_404()
-#     posts = [
-#         {'author': user, 'body': 'Test post #1'},
-#         {'author': user, 'body': 'Test post #2'}
-#     ]
-#     return render_template('user.html', user=user, posts=posts)
