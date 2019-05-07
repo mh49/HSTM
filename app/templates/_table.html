@@ -1,42 +1,37 @@
 <script>
     document.addEventListener("DOMContentLoaded", function(){
         var table = document.getElementById("tbl");
-        // alert("hello");
-        //alert(tbl.rows.length);
         for (var i=1 ; i < tbl.rows.length ;i++){ 
             var date = new Date((tbl.rows[i].cells[0].innerHTML)*1000).toUTCString()
             tbl.rows[i].cells[0].innerHTML = date
-            // console.log(date)
             }
     });
 </script>
 <div class="container">
         <div class="row">
                 <div class="table-responsive col-md-12"  style="background-color: #979699db; margin: 1%;" >
-                    <!-- <div  class="table-responsive" > -->
-                            <table id="tbl" data-toggle="bootstrap-table" data-pagination="true"  class="datatable table table-hover" >
-                                <thead class="thead-dark" >
-                                    <tr>
-                                        <th scope="col">Time Stamp</th>
-                                        <th scope="col">Temp1 °C</th>
-                                        <th scope="col">Temp2 °C</th>
-                                        <th scope="col">TAmbiant °C</th>
-                                        <th scope="col">Humidity %</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {%for mes in mesurments %}
-                                        <tr>
-                                            <td> {{ mes.Time_Stamp }} </td>
-                                            <td> {{ mes.Temp1 }} </td>
-                                            <td> {{ mes.Temp2 }} </td>
-                                            <td> {{ mes.Tambiant }} </td>
-                                            <td> {{ mes.Humidity }} </td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        <!-- </div> -->
+                    <table id="tbl" data-toggle="bootstrap-table" data-pagination="true"  class="datatable table table-hover" >
+                        <thead class="thead-dark" >
+                            <tr>
+                                <th scope="col">Time Stamp</th>
+                                <th scope="col">Temp1 °C</th>
+                                <th scope="col">Temp2 °C</th>
+                                <th scope="col">TAmbiant °C</th>
+                                <th scope="col">Humidity %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%for mes in mesurments %}
+                                <tr>
+                                    <td> {{ mes.Time_Stamp }} </td>
+                                    <td> {{ mes.Temp1 }} </td>
+                                    <td> {{ mes.Temp2 }} </td>
+                                    <td> {{ mes.Tambiant }} </td>
+                                    <td> {{ mes.Humidity }} </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
         </div>
 </div>
