@@ -1,20 +1,6 @@
 $(document).ready(function(){
-    // alert("test");
     var getData = $.get('/data');
     getData.done(function(res){
-
-        // console.log(res);
-        // console.log(res.time.length);
-        // console.log(res.Temp1);
-        // console.log(res.Temp1[0]);
-        
-        // Temperatures = document.getElementById('chart1');
-
-        // Plotly.plot( Temperatures, [{
-        // x: res.time,
-        // y: res.Temp1 }], {
-        // margin: { t: 0 } } );
-
         var trace1 = {
             type: "scatter",
             mode: "lines",
@@ -23,7 +9,6 @@ $(document).ready(function(){
             y: res.Temp1,
             line: {color: '#e61a1a'}
           }
-          
           var trace2 = {
             type: "scatter",
             mode: "lines",
@@ -32,7 +17,6 @@ $(document).ready(function(){
             y: res.Temp2,
             line: {color: '#0d1acc'}
           }
-
           var trace3 = {
             type: "scatter",
             mode: "lines",
@@ -41,9 +25,7 @@ $(document).ready(function(){
             y: res.Tambiant,
             line: {color: '#41d053'}
           }
-          
           var data = [trace1,trace2,trace3];
-          
           var layout = {
             title: 'Temperature',
             font: {
@@ -63,9 +45,7 @@ $(document).ready(function(){
               plot_bgcolor:"transparent",
               paper_bgcolor:'rgba(0,0,0,0)'
           };
-          
           Plotly.newPlot('chart1', data, layout , {responsive: true} );
-
           var trace4 = {
           type: "scatter",
           mode: "lines",
@@ -74,9 +54,7 @@ $(document).ready(function(){
           y: res.Humidity,
           line: {color: '#8541a7'}
           }
-
           var data = [trace4];
-
           var layout2 = {
           title: 'Humidity',
           font: {
@@ -98,20 +76,16 @@ $(document).ready(function(){
           plot_bgcolor:"transparent",
           paper_bgcolor:'rgba(0,0,0,0)'
           };
-
           Plotly.newPlot('chart2', data, layout2 , {responsive: true});
-        
     });
 
     var APIData = $.get('http://api.openweathermap.org/data/2.5/weather?id=2487134&APPID=046afe7166cc4ba51e9ef2026ce0e362');
     APIData.done(function(API){
-      // console.log(API)
       var table = document.getElementById("API_table");
-      // alert(table.rows.length);
       table.rows[0].cells[1].innerHTML = String((API.main.temp - 273.15).toFixed(2)) + " °C";
       table.rows[1].cells[1].innerHTML = String(API.main.humidity) + " %";
-      table.rows[2].cells[1].innerHTML = String(API.main.pressure) + " Atm";
-      table.rows[3].cells[1].innerHTML = String(API.wind.speed) + " Km/h";
+      table.rows[2].cells[1].innerHTML = String(API.main.pressure) + " hPa";
+      table.rows[3].cells[1].innerHTML = String(API.wind.speed) + " m/s";
       table.rows[4].cells[1].innerHTML = String(API.wind.deg) + " °";
       table.rows[5].cells[1].innerHTML = String(API.weather[0].main) ;
     });
