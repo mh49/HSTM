@@ -28,5 +28,5 @@ venv.bak/
 # Pyre type checker
 .pyre/
 
-
+/test_tools/
 /migrations/
