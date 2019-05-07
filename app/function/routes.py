@@ -12,63 +12,14 @@ WEATHER_API_URL='http://api.openweathermap.org/data/2.5/weather?id=2487134&APPID
 function = Blueprint('function', __name__)
 
 # route for adding a measurment to the data base
-@function.route('/add', methods=['GET', 'POST'])
+@function.route('/add', methods=['GET'])
 def add():
-    if request.method == 'POST':
-        # print("POST Request:")
-        # print("Req.url: %s"%request.url)
-        # print("Req.args: %s"%request.args)
-        # print("Req.form: %s"%request.form)
-        # print("Req.values: %s"%request.values)
-
-        data = request.values.to_dict()
-        data['dbTimeStamp']=time.time()
-
-        print("dbTimeStamp:%s \nTimeStamp:%s \nTemp1:%s \nTemp2:%s \nTAmbiant:%s \nHumidity:%s \n"%
-                                                                        (
-                                                                        data['dbTimeStamp'],
-                                                                        data['TimeStamp'],
-                                                                        data['Temp1'],
-                                                                        data['Temp2'],
-                                                                        data['TAmbiant'],
-                                                                        data['Humidity']
-                                                                        )
-            )
-
-        return "POST"
-
-    else:
-        # print the request
-        # print("GET Request:")
-        # print("Req.url: %s"%request.url)
-        # print("Req.args: %s"%request.args)
-        # print("Req.form: %s"%request.form)
-        # print("Req.values: %s"%request.values)
-
-        data = request.values.to_dict()
-        data['dbTimeStamp']=time.time()
-
-        # print("data:%s"%data)
-        # print("type:%s"%type(data))
-
-        # print("dbTimeStamp:%s \nTimeStamp:%s \nTemp1:%s \nTemp2:%s \nTAmbiant:%s \nHumidity:%s \n"%
-        #                                                                         (
-        #                                                                         data['dbTimeStamp'],
-        #                                                                         data['TimeStamp'],
-        #                                                                         data['Temp1'],
-        #                                                                         data['Temp2'],
-        #                                                                         data['TAmbiant'],
-        #                                                                         data['Humidity']
-        #                                                                         )
-        #             )
-
-        
-        # api_data={}
+    if request.method == 'GET':
+        data = request.values.to_dict()     # get the measurments into a dicionary
         try:
-            api_data = requests.get(WEATHER_API_URL , timeout=10).json()
+            api_data = requests.get(WEATHER_API_URL , timeout=10).json()    # weather API
 
             mesur = Rig01 (
-                    # dbTime_Stamp=time.time(),
                     Time_Stamp=(data['TimeStamp']), 
                     Temp1=float(data['Temp1']), 
                     Temp2=float(data['Temp2']), 
@@ -82,28 +33,20 @@ def add():
                     Weather=api_data['weather'][0]['main']
                     )
 
-            db.session.add(mesur)
+            db.session.add(mesur)       # add the measur to the data base
             db.session.commit()
 
         except:
             print("api exception")
-
             mesur = Rig01 (
-                    # dbTime_Stamp=time.time(),
                     Time_Stamp=(data['TimeStamp']), 
                     Temp1=float(data['Temp1']), 
                     Temp2=float(data['Temp2']), 
                     Tambiant=float(data['TAmbiant']), 
                     Humidity=float(data['Humidity'])
                     )
-
             db.session.add(mesur)
             db.session.commit()
-        # print(mesur.Time_Stamp)
-        # print(db.session.query_property())
-
-        # s= Rig01.query.all()
-        # print(s)
         return "GET"
     return 200
 
@@ -123,15 +66,13 @@ def delete():
 @function.route('/data')
 @login_required
 def data():
-
-    qresponse = Rig01.query.order_by(Rig01.Time_Stamp.desc()).limit(2592000).all()
+    qresponse = Rig01.query.order_by(Rig01.Time_Stamp.desc()).all()
     xAxe = []
     t1vec = [] 
     t2vec = []
     tambvec  = []
     humidity = []
     for i in qresponse:
-        # print(datetime.fromtimestamp(i.Time_Stamp).strftime("%Y-%m-%d %H:%M:%S"))
         xAxe.append(datetime.fromtimestamp(i.Time_Stamp).strftime("%Y-%m-%d %H:%M:%S"))
         t1vec.append(i.Temp1)
         t2vec.append(i.Temp2)
