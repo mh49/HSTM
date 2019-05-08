@@ -24,7 +24,7 @@ class Measurement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     RigId = db.Column(db.String(128) , unique=False , nullable=False)
     dbTime_Stamp = db.Column(db.Float() , default=time.time)
-    Time_Stamp = db.Column(db.Float() , default=time.time, index=True)
+    Time_Stamp = db.Column(db.Float() , default=time.time, nullable=False , index=True)
     Temp1 = db.Column(db.Float(), unique=False , nullable=True)
     Temp2 = db.Column(db.Float(), unique=False , nullable=True)
     Tambiant =  db.Column(db.Float(), unique=False , nullable=True)
@@ -39,6 +39,14 @@ class Measurement(db.Model):
     def __repr__(self):
         return f"Mesurment({self.dbTime_Stamp},{self.Time_Stamp}, {self.Temp1} ,{self.Temp2} ,{self.Tambiant}, {self.Humidity} , \
                             {self.API_Temp},{self.API_Humidity}, {self.API_Pressure} ,{self.API_WindSpeed} ,{self.API_WindDeg}, {self.API_Weather})"
+
+
+class Metadata(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    API_URL = db.Column(db.String(128) , unique=False , nullable=False)
+    
+    def __repr__(self):
+        return f"Metadata({self.API_URL})"
 
 @login.user_loader
 def load_user(id):
