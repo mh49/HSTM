@@ -1,24 +1,21 @@
 from flask import render_template, redirect, url_for, request , Blueprint , jsonify
 from flask_login import login_required 
-from app.models import Measurement
+from app.models import Measurement , Metadata
 from flask import current_app
 from app import db
 from datetime import datetime
 import time
 import requests
 
-WEATHER_API_URL= MetaData.query.filter(MetaData.API_URL).first()
-
 function = Blueprint('function', __name__)
-
 # route for adding a measurment to the data base
 @function.route('/add', methods=['GET'])
 def add():
     if request.method == 'GET':
         data = request.values.to_dict()     # get the measurments into a dicionary
         try:
+            WEATHER_API_URL= Metadata.query.order_by(Metadata.API_URL).first().API_URL
             api_data = requests.get(WEATHER_API_URL , timeout=10).json()    # weather API
-
             mesur = Measurement (
                     RigId=data['RigId'],
                     Time_Stamp=(data['TimeStamp']), 
@@ -64,7 +61,7 @@ def delete():
 
 # route for getting the data out of the data base 
 @function.route('/data')
-@login_required
+# @login_required
 def data():
     qresponse = Measurement.query.order_by(Measurement.Time_Stamp.desc()).all()
     xAxe = []
@@ -84,8 +81,7 @@ def data():
 # route for getting the data out of the data base 
 @function.route('/api_data')
 # @login_required
-def data():
-    WEATHER_API_URL='http://api.openweathermap.org/data/2.5/weather?id=2487134&APPID=046afe7166cc4ba51e9ef2026ce0e362'
-
-    json_data = requests.get(WEATHER_API_URL).json()
+def api_data():
+    WEATHER_API_URL = Metadata.query.order_by(Metadata.API_URL).first().API_URL
+    json_data =jsonify(requests.get(WEATHER_API_URL).json())
     return json_data
