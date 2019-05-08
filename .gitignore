@@ -30,3 +30,4 @@ venv.bak/
 
 /test_tools/
 /migrations/
+/.vscode/
