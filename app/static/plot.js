@@ -79,7 +79,7 @@ $(document).ready(function(){
           Plotly.newPlot('chart2', data, layout2 , {responsive: true});
     });
 
-    var APIData = $.get('http://api.openweathermap.org/data/2.5/weather?id=2487134&APPID=046afe7166cc4ba51e9ef2026ce0e362');
+    var APIData = $.get('/api_data');
     APIData.done(function(API){
       var table = document.getElementById("API_table");
       table.rows[0].cells[1].innerHTML = String((API.main.temp - 273.15).toFixed(2)) + " °C";
