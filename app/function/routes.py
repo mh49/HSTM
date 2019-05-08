@@ -7,7 +7,7 @@ from datetime import datetime
 import time
 import requests
 
-WEATHER_API_URL='http://api.openweathermap.org/data/2.5/weather?id=2487134&APPID=046afe7166cc4ba51e9ef2026ce0e362'
+WEATHER_API_URL= MetaData.query.filter(MetaData.API_URL).first()
 
 function = Blueprint('function', __name__)
 
@@ -36,7 +36,6 @@ def add():
 
             db.session.add(mesur)       # add the measur to the data base
             db.session.commit()
-
         except:
             # API request failled
             mesur = Measurement (
@@ -81,3 +80,12 @@ def data():
         humidity.append(i.Humidity)
     data = jsonify({'time':xAxe , 'Temp1':t1vec , 'Temp2':t2vec , 'Tambiant':tambvec , 'Humidity':humidity})
     return data
+
+# route for getting the data out of the data base 
+@function.route('/api_data')
+# @login_required
+def data():
+    WEATHER_API_URL='http://api.openweathermap.org/data/2.5/weather?id=2487134&APPID=046afe7166cc4ba51e9ef2026ce0e362'
+
+    json_data = requests.get(WEATHER_API_URL).json()
+    return json_data
