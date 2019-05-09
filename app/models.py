@@ -21,7 +21,7 @@ class User(UserMixin, db.Model):
         return '<User {}>'.format(self.username)    
 
 class Measurement(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True , index=True)
     RigId = db.Column(db.String(128) , unique=False , nullable=False)
     dbTime_Stamp = db.Column(db.Float() , default=time.time)
     Time_Stamp = db.Column(db.Float() , default=time.time, nullable=False , index=True)
