@@ -70,7 +70,8 @@ def data():
     tambvec  = []
     humidity = []
     for i in qresponse:
-        xAxe.append(datetime.fromtimestamp(i.Time_Stamp).strftime("%Y-%m-%d %H:%M:%S"))
+        # xAxe.append(datetime.fromtimestamp(i.Time_Stamp).strftime("%Y-%m-%d %H:%M:%S"))
+        xAxe.append(datetime.utcfromtimestamp(i.Time_Stamp).strftime("%Y-%m-%d %H:%M:%S"))
         t1vec.append(i.Temp1)
         t2vec.append(i.Temp2)
         tambvec.append(i.Tambiant)
