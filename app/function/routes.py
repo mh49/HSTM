@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, request , Blueprint , json
 from flask_login import login_required 
 from app.models import Measurement , Metadata
 from flask import current_app
-from app import db
+from app import db ,excel
 from datetime import datetime
 import time
 import requests
@@ -86,3 +86,12 @@ def api_data():
     WEATHER_API_URL = Metadata.query.order_by(Metadata.API_URL).first().API_URL
     json_data =jsonify(requests.get(WEATHER_API_URL).json())
     return json_data
+
+@function.route("/export", methods=['GET'])
+def export_records():
+    query_sets = Measurement.query.filter_by(RigId="Rig_01").all()
+    column_names = ['Time_Stamp' , 'Temp1' , 'Temp2' , 'Tambiant' , 'API_Temp' , 'Humidity' , 'API_Humidity']
+    # return excel.make_response_from_array([[1, 2], [3, 4]], "csv",
+    #                                       file_name="export_data")
+    # return excel.make_response_from_tables(db.session, [Measurement], "xls")
+    return excel.make_response_from_query_sets(query_sets, column_names, "xls")

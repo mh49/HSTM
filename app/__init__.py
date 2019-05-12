@@ -3,6 +3,7 @@ from app.config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+import flask_excel as excel
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -20,6 +21,8 @@ def create_app(config_class=Config):
 
     login.init_app(app)
 
+    excel.init_excel(app)
+    
     from app.main.routes import main
     from app.users.routes import users
     from app.function.routes import function
