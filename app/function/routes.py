@@ -70,7 +70,8 @@ def data():
     tambvec  = []
     humidity = []
     for i in qresponse:
-        xAxe.append(datetime.fromtimestamp(i.Time_Stamp).strftime("%Y-%m-%d %H:%M:%S"))
+        # xAxe.append(datetime.fromtimestamp(i.Time_Stamp).strftime("%Y-%m-%d %H:%M:%S"))
+        xAxe.append(datetime.utcfromtimestamp(i.Time_Stamp).strftime("%Y-%m-%d %H:%M:%S"))
         t1vec.append(i.Temp1)
         t2vec.append(i.Temp2)
         tambvec.append(i.Tambiant)
@@ -86,9 +87,11 @@ def api_data():
     json_data =jsonify(requests.get(WEATHER_API_URL).json())
     return json_data
 
-
-# @function.route("/export", methods=['GET'])
-# def export_records():
-#     query_sets = Measurement.query.filter_by(id=1).all()
-#     column_names = ['Time_Stamp', 'Temp1' ,'Temp2','Tambiant' ,'API_Temp','Humidity', ]
-#     return excel.make_response_from_query_sets(query_sets, column_names, "xls")
+@function.route("/export", methods=['GET'])
+def export_records():
+    query_sets = Measurement.query.filter_by(RigId="Rig_01").all()
+    column_names = ['Time_Stamp' , 'Temp1' , 'Temp2' , 'Tambiant' , 'API_Temp' , 'Humidity' , 'API_Humidity']
+    # return excel.make_response_from_array([[1, 2], [3, 4]], "csv",
+    #                                       file_name="export_data")
+    # return excel.make_response_from_tables(db.session, [Measurement], "xls")
+    return excel.make_response_from_query_sets(query_sets, column_names, "xls")
