@@ -22,7 +22,7 @@ class User(UserMixin, db.Model):
 
 class Measurement(db.Model):
     id = db.Column(db.Integer, primary_key=True , index=True)
-    RigId = db.Column(db.String(128) , unique=False , nullable=False)
+    RigId = db.Column(db.String(16) , unique=False , nullable=False)
     dbTime_Stamp = db.Column(db.Float() , default=time.time)
     Time_Stamp = db.Column(db.Float() , default=time.time, nullable=False , index=True)
     Temp1 = db.Column(db.Float(), unique=False , nullable=True)
@@ -43,8 +43,9 @@ class Measurement(db.Model):
 
 class Metadata(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    RigId = db.Column(db.String(16) , unique=True , nullable=False)
     API_URL = db.Column(db.String(128) , unique=False , nullable=False)
-    
+    interval = db.Column(db.Integer, unique=False , nullable=False , default=60)
     def __repr__(self):
         return f"Metadata({self.API_URL})"
 

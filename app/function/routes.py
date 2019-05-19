@@ -88,7 +88,7 @@ def api_data():
     return json_data
 # route for excel export
 @function.route("/export", methods=['GET'])
-def export_records():
+def export():
     query_sets = Measurement.query.filter_by(RigId="Rig_01").all()
     for i in query_sets:
         # xAxe.append(datetime.fromtimestamp(i.Time_Stamp).strftime("%Y-%m-%d %H:%M:%S"))
@@ -98,3 +98,10 @@ def export_records():
     #                                       file_name="export_data")
     # return excel.make_response_from_tables(db.session, [Measurement], "xls")
     return excel.make_response_from_query_sets(query_sets, column_names, "xls")
+
+# @function.route('/interval' , methods=['GET'])
+# def interval():
+#     if request.method == 'GET':
+#         rig = request.values.to_dict()
+#         print(rig)
+#         return qresponse.interval
