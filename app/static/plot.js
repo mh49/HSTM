@@ -39,7 +39,7 @@ $(document).ready(function(){
               xaxis: {
                 autorange: true,
                 range: [res.time[(res.time.length - 1)], res.time[0]],
-                rangeslider: {range: [res.time[(res.time.length - 1)], res.time[0]]},
+                //rangeslider: {range: [res.time[(res.time.length - 1)], res.time[0]]},
                 type: 'date'
               },
               plot_bgcolor:"transparent",
