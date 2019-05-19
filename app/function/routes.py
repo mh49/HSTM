@@ -86,10 +86,13 @@ def api_data():
     WEATHER_API_URL = Metadata.query.order_by(Metadata.API_URL).first().API_URL
     json_data =jsonify(requests.get(WEATHER_API_URL).json())
     return json_data
-
+# route for excel export
 @function.route("/export", methods=['GET'])
 def export_records():
     query_sets = Measurement.query.filter_by(RigId="Rig_01").all()
+    for i in query_sets:
+        # xAxe.append(datetime.fromtimestamp(i.Time_Stamp).strftime("%Y-%m-%d %H:%M:%S"))
+        i.Time_Stamp = datetime.utcfromtimestamp(i.Time_Stamp).strftime("%Y-%m-%d %H:%M:%S")
     column_names = ['Time_Stamp' , 'Temp1' , 'Temp2' , 'Tambiant' , 'API_Temp' , 'Humidity' , 'API_Humidity']
     # return excel.make_response_from_array([[1, 2], [3, 4]], "csv",
     #                                       file_name="export_data")
