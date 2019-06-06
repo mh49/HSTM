@@ -17,7 +17,7 @@ def add():
             WEATHER_API_URL= Metadata.query.order_by(Metadata.API_URL).first().API_URL
             api_data = requests.get(WEATHER_API_URL , timeout=10).json()    # weather API
             mesur = Measurement (
-                    RigId=data['RigId'],
+                    RigId="Rig_01",#data['RigId'],
                     Time_Stamp=(data['TimeStamp']), 
                     Temp1=float(data['Temp1']), 
                     Temp2=float(data['Temp2']), 
@@ -89,7 +89,7 @@ def api_data():
 # route for excel export
 @function.route("/export", methods=['GET'])
 def export():
-    query_sets = Measurement.query.filter_by(RigId="Rig_01").all()
+    query_sets = Measurement.query.filter_by(RigId="Rig_001").all()
     for i in query_sets:
         # xAxe.append(datetime.fromtimestamp(i.Time_Stamp).strftime("%Y-%m-%d %H:%M:%S"))
         i.Time_Stamp = datetime.utcfromtimestamp(i.Time_Stamp).strftime("%Y-%m-%d %H:%M:%S")
