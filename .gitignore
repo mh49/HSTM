@@ -31,3 +31,4 @@ venv.bak/
 /test_tools/
 /migrations/
 /.vscode/
+app/config.py
