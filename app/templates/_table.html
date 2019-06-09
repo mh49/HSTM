@@ -1,16 +1,16 @@
-<script>
+<!-- <script>
     document.addEventListener("DOMContentLoaded", function(){
         var table = document.getElementById("tbl");
-        for (var i=1 ; i < tbl.rows.length ;i++){ 
+        for (var i=1 ; i < tbl.rows.length -1;i++){ 
             var date = new Date((tbl.rows[i].cells[0].innerHTML)*1000).toUTCString()
             tbl.rows[i].cells[0].innerHTML = date
             }
     });
-</script>
+</script> -->
 <div class="container">
         <div class="row">
                 <div class="table-responsive col-md-12"  style="background-color: #979699db; margin: 1%;" >
-                    <table id="tbl" data-toggle="bootstrap-table" data-pagination="true"  class="datatable table table-hover" >
+                    <!-- <table id="tbl" data-toggle="bootstrap-table" data-pagination="true"  class="datatable table table-hover" >
                         <thead class="thead-dark" >
                             <tr>
                                 <th scope="col">Time Stamp</th>
@@ -31,7 +31,17 @@
                                 </tr>
                             {% endfor %}
                         </tbody>
-                    </table>
+                        <tfoot class="thead-dark">
+                            <tr>
+                                <th scope="col">Time Stamp</th>
+                                <th scope="col">Temp1 °C</th>
+                                <th scope="col">Temp2 °C</th>
+                                <th scope="col">TAmbiant °C</th>
+                                <th scope="col">Humidity %</th>
+                            </tr>
+                        </tfoot>
+                    </table> -->
+                    <table id="tb2" data-toggle="bootstrap-table" data-pagination="true"  class="datatable table table-hover" ></table>
                 </div>
         </div>
 </div>

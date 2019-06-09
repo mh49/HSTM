@@ -5,7 +5,7 @@ $(document).ready(function(){
             type: "scatter",
             mode: "lines",
             name: 'Temp1',
-            x: res.time,
+            x: res.Time,
             y: res.Temp1,
             line: {color: '#e61a1a'}
           }
@@ -13,7 +13,7 @@ $(document).ready(function(){
             type: "scatter",
             mode: "lines",
             name: 'Temp2',
-            x: res.time,
+            x: res.Time,
             y: res.Temp2,
             line: {color: '#0d1acc'}
           }
@@ -21,7 +21,7 @@ $(document).ready(function(){
             type: "scatter",
             mode: "lines",
             name: 'Ambiant',
-            x: res.time,
+            x: res.Time,
             y: res.Tambiant,
             line: {color: '#41d053'}
           }
@@ -38,8 +38,8 @@ $(document).ready(function(){
               },
               xaxis: {
                 autorange: true,
-                range: [res.time[(res.time.length - 1)], res.time[0]],
-                //rangeslider: {range: [res.time[(res.time.length - 1)], res.time[0]]},
+                range: [res.Time[(res.Time.length - 1)], res.Time[0]],
+                //rangeslider: {range: [res.Time[(res.Time.length - 1)], res.Time[0]]},
                 type: 'date'
               },
               plot_bgcolor:"transparent",
@@ -50,7 +50,7 @@ $(document).ready(function(){
           type: "scatter",
           mode: "lines",
           name: 'Humidity',
-          x: res.time,
+          x: res.Time,
           y: res.Humidity,
           line: {color: '#8541a7'}
           }
@@ -63,8 +63,8 @@ $(document).ready(function(){
           },
           xaxis: {
             autorange: true,
-            range: [res.time[(res.time.length - 1)], res.time[0]],
-            rangeslider: {range: [res.time[(res.time.length - 1)], res.time[0]]},
+            range: [res.Time[(res.Time.length - 1)], res.Time[0]],
+            rangeslider: {range: [res.Time[(res.Time.length - 1)], res.Time[0]]},
             type: 'date',
           },
           yaxis: {
@@ -77,6 +77,27 @@ $(document).ready(function(){
           paper_bgcolor:'rgba(0,0,0,0)'
           };
           Plotly.newPlot('chart2', data, layout2 , {responsive: true});
+
+
+          //data table:
+          var dataSet=[];
+          for(var i=0; i < res.Time.length ; i++){
+            dataSet.push([res.Time[i],res.Temp1[i],res.Temp2[i],res.Tambiant[i],res.Humidity[i]])
+          }
+
+          console.log(dataSet)
+
+          $('#tb2').DataTable({
+            data: dataSet,
+             "columns": [
+                 { "title": "Time" },
+                 { "title": "Temp1" },
+                 { "title": "Temp2" },
+                 { "title": "Tambiant" },
+                 { "title": "Humidity" }
+             ]
+         } );
+         
     });
 
     var APIData = $.get('/api_data');

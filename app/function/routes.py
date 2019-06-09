@@ -77,7 +77,7 @@ def data():
         t2vec.append(i.Temp2)
         tambvec.append(i.Tambiant)
         humidity.append(i.Humidity)
-    data = jsonify({'time':xAxe , 'Temp1':t1vec , 'Temp2':t2vec , 'Tambiant':tambvec , 'Humidity':humidity})
+    data = jsonify({'Time':xAxe , 'Temp1':t1vec , 'Temp2':t2vec , 'Tambiant':tambvec , 'Humidity':humidity})
     return data
 
 # route for getting the data out of the data base 
@@ -90,7 +90,7 @@ def api_data():
 # route for excel export
 @function.route("/export", methods=['GET'])
 def export():
-    query_sets = Measurement.query.filter_by(RigId="Rig_01").all()
+    query_sets = query_sets = Measurement.query.filter_by(RigId="Rig_01").order_by(Measurement.Time_Stamp.desc()).all()
     for i in query_sets:
         # xAxe.append(datetime.fromtimestamp(i.Time_Stamp).strftime("%Y-%m-%d %H:%M:%S"))
         i.Time_Stamp = datetime.utcfromtimestamp(i.Time_Stamp).strftime("%Y-%m-%d %H:%M:%S")
