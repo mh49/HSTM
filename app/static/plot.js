@@ -85,7 +85,7 @@ $(document).ready(function(){
             dataSet.push([res.Time[i],res.Temp1[i],res.Temp2[i],res.Tambiant[i],res.Humidity[i]])
           }
 
-          console.log(dataSet)
+          // console.log(dataSet)
 
           $('#tb2').DataTable({
             data: dataSet,
