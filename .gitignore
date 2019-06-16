@@ -29,6 +29,7 @@ venv.bak/
 .pyre/
 
 /test_tools/
+/logs/
 /migrations/
 /.vscode/
 app/config.py
