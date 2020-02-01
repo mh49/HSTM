@@ -22,3 +22,8 @@ def get_image(image_name):
         return send_from_directory("static/images", filename=image_name, as_attachment=True)
     except FileNotFoundError:
         print('Image Not found')
+
+@main.route('/iot')
+@login_required
+def iot():
+    return render_template('iot.html', title='iot' )

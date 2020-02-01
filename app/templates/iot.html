@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block styles %}
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.css') }}"> -->
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"> -->
+{% endblock styles %}
+
+{% block scripts %}
+
+
+{% endblock scripts %}
+
+{% block content %}
+    {% block app_content %}
+            
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery-3.4.0.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+
+        <script type="text/javascript">
+        
+            $(function(){				
+                $("[id='switch']").click(function(e){
+                    e.preventDefault();
+                    console.log('button clicked');
+                    var data = {};
+                    data.pins = this.name;
+                    if (this.value == "ON")	{ data.val = "on"; }
+                    else if (this.value == "OFF") { data.val = "off"; }
+                    message = new Paho.MQTT.Message(data.val);
+                    message.destinationName = "epicmosta/mostaland/luc_150w/n001";
+                    mqtt.send(message);
+
+                });		
+                $("[type='range']").click(function(e){
+                    e.preventDefault();
+                    console.log('Slider changed');
+                    var data = {};
+                    data.cs = this.name;
+                    data.val = "p" + Math.round(this.value * 5.1).toString(10).padStart(3,"0");
+                    data.pot = this.id;
+                    /* send data for seting pot*/
+                    message = new Paho.MQTT.Message(data.val);
+                    message.destinationName = "epicmosta/mostaland/luc_150w/n001";
+                    mqtt.send(message);
+
+                });	
+            });
+        </script>
+
+<script type = "text/javascript" language = "javascript">
+
+    var mqtt;
+    var reconnectTimeout = 2000;
+    var host="192.168.137.230"; //change this
+    var port=9001;
+    
+     function onConnect() {
+  // Once a connection has been made, make a subscription and send a message.
+
+    console.log("Connected ");
+    //mqtt.subscribe("sensor1");
+    message = new Paho.MQTT.Message("Hello World");
+    message.destinationName = "epicmosta/mostaland/luc_150w/n001";
+    mqtt.send(message);
+  }
+  function MQTTconnect() {
+    console.log("connecting to "+ host +" "+ port);
+    mqtt = new Paho.MQTT.Client(host,port,"clientjs");
+    //document.write("connecting to "+ host);
+    var options = {
+        timeout: 3,
+        onSuccess: onConnect,
+      
+     };
+     
+    mqtt.connect(options); //connect
+    }
+ 
+  </script>
+
+        <body>
+            <script>
+                    MQTTconnect();
+            </script>
+
+            <h1 align="center" class="display-3" >Control Board</h1><br>
+            
+            <div class="row">
+                <div class="col" align="center" style="background-color:#aaa;" >
+                    <h3 align="center" >Switches Control </h3>
+                    <div >
+                        <div class="btn-group-vertical btn-group-sm">
+                            Lum 1  <input type="button" name="1" value="ON" class="btn btn-success btn-sm" id="switch"/>  <input type="button" name="1" value="OFF" class="btn btn-danger btn-sm"  id="switch"/>  
+                            <!-- Lum 2  <input type="button" name="2" value="ON" class="btn btn-success btn-sm" id="switch"/>  <input type="button" name="2" value="OFF" class="btn btn-danger btn-sm"  id="switch"/> 
+                            Lum 3  <input type="button" name="3" value="ON" class="btn btn-success btn-sm" id="switch"/>  <input type="button" name="3" value="OFF" class="btn btn-danger btn-sm"  id="switch"/> 
+                            Lum 4  <input type="button" name="4" value="ON" class="btn btn-success btn-sm" id="switch"/>  <input type="button" name="4" value="OFF" class="btn btn-danger btn-sm"  id="switch"/>
+                            Lum 5  <input type="button" name="5" value="ON" class="btn btn-success btn-sm" id="switch"/>  <input type="button" name="5" value="OFF" class="btn btn-danger btn-sm"  id="switch"/> -->
+                        </div>                        
+                    </div>
+                </div>
+                <div class="col" style="background-color:#bbb;">
+                        <h3 align="center">PWM Control</h3>
+                        <div align="center" class="slidecontainer">
+                            <p>PWM</p>
+                            <input type="range" name="CS1" min="0" max="100" value="50" step="1" class="slider" id="pot0"> 
+                            <p>Value: <span id="slider1val"></span> % </p>
+                        </div>
+                        <script>
+                            var pot1slider = document.getElementById("pot0");
+                            var slider1_val = document.getElementById("slider1val");
+                            slider1_val.innerHTML = pot1slider.value;
+                            
+                            pot1slider.oninput = function() {
+                                slider1_val.innerHTML = this.value;
+                            }
+
+                        </script>
+                </div>
+            </div>
+        </body>
+    </html>
+    
+    {% endblock app_content%}
+{% endblock content %}
